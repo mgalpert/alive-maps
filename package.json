@@ -1,0 +1,36 @@
+{
+  "name": "alive-maps",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c green,blue \"npm run dev:api\" \"npm run dev:web\"",
+    "dev:api": "tsx watch src/dev-server.ts",
+    "dev:web": "vite --host 0.0.0.0 --port 5173",
+    "build": "vite build",
+    "typecheck": "wrangler types && tsc -p tsconfig.json --noEmit && tsc -p tsconfig.node.json --noEmit && tsc -p web/tsconfig.json --noEmit",
+    "test": "tsx --test src/geo.test.ts src/poi/classify.test.ts src/routing/summary.test.ts src/routing/candidates.test.ts src/routing/choose.test.ts src/routing/osrm.test.ts",
+    "check": "npm run typecheck && npm test && npm run build",
+    "deploy": "npm run build && wrangler deploy",
+    "preview": "npm run build && wrangler dev --host 127.0.0.1 --port 8788"
+  },
+  "dependencies": {
+    "maplibre-gl": "^5.6.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.19.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "@vitejs/plugin-react": "^5.1.0",
+    "concurrently": "^9.2.1",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.2",
+    "wrangler": "^4.102.0"
+  }
+}
